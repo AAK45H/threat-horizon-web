@@ -99,6 +99,7 @@ pm2 save
 sudo nano /etc/nginx/conf.d/myapp.conf
 ```
 paste this:
+```bash
 server {
     listen 80;
     server_name YOUR_EC2_PUBLIC_IP;
@@ -119,7 +120,7 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
-
+```
 ### 10. Apply Nginx config
 ```bash
 sudo nginx -t
