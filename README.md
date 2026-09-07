@@ -49,6 +49,89 @@ To serve the built application using the included Express server (runs on port 3
 npm start
 ```
 
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+### To Host on EC2
+# 1. Update system
+```bash
+sudo yum update -y
+```
+# 2. Install Node.js
+```bash
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+sudo yum install -y nodejs
+```
+# 3. Install PM2 and Nginx
+```bash
+sudo npm install -g pm2
+sudo dnf install nginx -y      # AL2023
+```
+
+# 4. Start Nginx
+```bash
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
+# 5. Clone repo
+```bash
+cd ~
+git clone https://github.com/AAK45H/threat-horizon-web.git
+cd threat-horizon-web
+```
+
+# 6. Install deps and build
+```bash
+npm install
+npm run build
+```
+
+# 7. Copy dist to web root
+```bash
+sudo mkdir -p /var/www/myapp
+sudo cp -r dist/* /var/www/myapp/
+```
+
+# 8. Start backend with PM2
+```bash
+pm2 start server.js --name "backend"
+pm2 startup
+pm2 save
+```
+
+# 9. Create Nginx config
+```bash
+sudo nano /etc/nginx/conf.d/myapp.conf
+```
+paste this:
+server {
+    listen 80;
+    server_name YOUR_EC2_PUBLIC_IP;
+
+    root /var/www/myapp;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# 10. Apply Nginx config
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
 ## Technologies Used
 - React
 - Vite
