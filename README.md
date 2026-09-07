@@ -14,12 +14,6 @@ Threat Horizon Web is a React-based interactive web application developed as par
 
 ## Getting Started
 
-### Install node on EC2
-```bash
-curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
-sudo yum install -y nodejs
-```
-
 ### Installation
 Clone the repository and install the dependencies:
 ```bash
