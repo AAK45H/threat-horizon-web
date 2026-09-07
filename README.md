@@ -48,53 +48,53 @@ npm start
 -----------------------------------------------------------------------------------------------------------------------------
 
 # To Host on EC2
-# 1. Update system
+### 1. Update system
 ```bash
 sudo yum update -y
 ```
-# 2. Install Node.js
+### 2. Install Node.js
 ```bash
 curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
 sudo yum install -y nodejs
 ```
-# 3. Install PM2 and Nginx
+### 3. Install PM2 and Nginx
 ```bash
 sudo npm install -g pm2
 sudo dnf install nginx -y      # AL2023
 ```
 
-# 4. Start Nginx
+### 4. Start Nginx
 ```bash
 sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
-# 5. Clone repo
+### 5. Clone repo
 ```bash
 cd ~
 git clone https://github.com/AAK45H/threat-horizon-web.git
 cd threat-horizon-web
 ```
 
-# 6. Install deps and build
+### 6. Install deps and build
 ```bash
 npm install
 npm run build
 ```
 
-# 7. Copy dist to web root
+### 7. Copy dist to web root
 ```bash
 sudo mkdir -p /var/www/myapp
 sudo cp -r dist/* /var/www/myapp/
 ```
 
-# 8. Start backend with PM2
+### 8. Start backend with PM2
 ```bash
 pm2 start server.js --name "backend"
 pm2 startup
 pm2 save
 ```
 
-# 9. Create Nginx config
+### 9. Create Nginx config
 ```bash
 sudo nano /etc/nginx/conf.d/myapp.conf
 ```
@@ -120,7 +120,7 @@ server {
     }
 }
 
-# 10. Apply Nginx config
+### 10. Apply Nginx config
 ```bash
 sudo nginx -t
 sudo systemctl restart nginx
